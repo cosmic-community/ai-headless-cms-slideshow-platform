@@ -140,6 +140,18 @@ export default function SlideshowPlayer({ slideshow }: SlideshowPlayerProps) {
 
   const currentSlide = slides[currentSlideIndex]
 
+  // Add safety check for currentSlide before rendering
+  if (!currentSlide) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center">
+        <div className="text-center text-white">
+          <h1 className="text-4xl font-bold mb-4">Slide Not Found</h1>
+          <p className="text-xl text-white/80">The requested slide could not be loaded.</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
       {/* Main slide view */}
