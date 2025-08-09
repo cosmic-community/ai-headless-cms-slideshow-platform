@@ -30,6 +30,8 @@ export default function SlideshowPlayer({ slideshow }: SlideshowPlayerProps) {
   const goToSlide = useCallback((index: number) => {
     if (index >= 0 && index < totalSlides) {
       setCurrentSlideIndex(index)
+      // Scroll to top when changing slides
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }, [totalSlides])
 
@@ -109,6 +111,11 @@ export default function SlideshowPlayer({ slideshow }: SlideshowPlayerProps) {
     }
   }, [goToNextSlide, goToPreviousSlide, goToSlide, exitSlideshow, toggleFullscreen, totalSlides])
 
+  // Scroll to top when slide changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [currentSlideIndex])
+
   // Prevent context menu and text selection during presentation
   useEffect(() => {
     const preventContextMenu = (e: MouseEvent) => e.preventDefault()
@@ -153,7 +160,7 @@ export default function SlideshowPlayer({ slideshow }: SlideshowPlayerProps) {
   }
 
   return (
-    <div className="relative min-h-screen bg-black overflow-hidden">
+    <div className="relative bg-black">
       {/* Main slide view */}
       <SlideView
         slide={currentSlide}
@@ -180,7 +187,7 @@ export default function SlideshowPlayer({ slideshow }: SlideshowPlayerProps) {
 
       {/* Fullscreen controls */}
       {isFullscreen && (
-        <div className="absolute top-4 right-4 flex items-center gap-2 z-50">
+        <div className="fixed top-4 right-4 flex items-center gap-2 z-50">
           <div className="bg-black/50 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-sm">
             {currentSlideIndex + 1} / {totalSlides}
           </div>
@@ -188,7 +195,7 @@ export default function SlideshowPlayer({ slideshow }: SlideshowPlayerProps) {
       )}
 
       {/* Progress indicator */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/20 z-40">
+      <div className="fixed bottom-0 left-0 right-0 h-1 bg-black/20 z-40">
         <div 
           className="h-full bg-blue-500 transition-all duration-300"
           style={{ width: `${((currentSlideIndex + 1) / totalSlides) * 100}%` }}

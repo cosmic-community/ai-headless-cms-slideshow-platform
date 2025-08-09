@@ -30,14 +30,15 @@ export default function SlideView({
   return (
     <div 
       className={`
-        relative w-full h-screen flex items-center justify-center p-6 md:p-12 lg:p-16
+        relative w-full min-h-screen flex flex-col justify-start p-6 md:p-12 lg:p-16 pb-24
         ${isActive ? 'animate-fade-in' : ''}
       `}
       style={{
         backgroundImage: optimizedBackgroundUrl ? `url(${optimizedBackgroundUrl})` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
       }}
     >
       {/* Enhanced dark overlay for better text readability */}
@@ -157,19 +158,19 @@ export default function SlideView({
             </div>
           </div>
         )}
+      </div>
 
-        {/* Slide counter - positioned at bottom center */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <div className="bg-black/60 backdrop-blur-md rounded-full px-6 py-3 text-white font-bold text-lg border border-white/20 shadow-lg">
-            {slideNumber} of {totalSlides}
-          </div>
+      {/* Slide counter - fixed at bottom */}
+      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="bg-black/60 backdrop-blur-md rounded-full px-6 py-3 text-white font-bold text-lg border border-white/20 shadow-lg">
+          {slideNumber} of {totalSlides}
         </div>
       </div>
 
       {/* Click areas for navigation (invisible) */}
-      <div className="absolute inset-0 flex">
-        <div className="flex-1 cursor-pointer" /> {/* Left half - previous */}
-        <div className="flex-1 cursor-pointer" /> {/* Right half - next */}
+      <div className="fixed inset-0 flex pointer-events-none">
+        <div className="flex-1 cursor-pointer pointer-events-auto" /> {/* Left half - previous */}
+        <div className="flex-1 cursor-pointer pointer-events-auto" /> {/* Right half - next */}
       </div>
     </div>
   )
